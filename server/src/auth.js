@@ -88,18 +88,23 @@ class Auth {
     }
   }
 
-  new_user_row(id) {
-    return {
+  new_user_row(id, info) {
+    var data = {
       id,
       groups: [ 'default', this._new_user_group ],
-      [writes.version_field]: 0,
+      [writes.version_field]: 0
     };
+    console.log(id, info)
+    if (info) {
+      data.info = info;
+    }
+    return data
   }
 
   // TODO: maybe we should write something into the user data to track open sessions/tokens
-  generate(provider, info) {
+  generate(provider, id, info) {
     return Promise.resolve().then(() => {
-      const key = this.auth_key(provider, info);
+      const key = this.auth_key(provider, id);
       const db = r.db(this._parent._name);
 
       const insert = (table, row) =>
@@ -113,7 +118,7 @@ class Auth {
 
       if (this._create_new_users) {
         query = insert('hz_users_auth', { id: key, user_id: r.uuid() })
-          .do((auth_user) => insert('users', this.new_user_row(auth_user('user_id'))));
+          .do((auth_user) => insert('users', this.new_user_row(auth_user('user_id'), info)));
       }
 
       return query.run(this._parent._reql_conn.connection()).catch((err) => {

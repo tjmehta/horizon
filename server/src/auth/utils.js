@@ -164,7 +164,6 @@ const oauth2 = (raw_options) => {
             run_request(make_inspect_request(access_token), (err2, inner_body) => {
               const user_info = try_json_parse(inner_body);
               const user_id = user_info && extract_id(user_info);
-
               if (err2) {
                 logger.error(`Error contacting oauth API: ${err2}`);
                 res.statusCode = 503;
@@ -174,7 +173,7 @@ const oauth2 = (raw_options) => {
                 res.statusCode = 500;
                 res.end('unparseable inspect response');
               } else {
-                horizon._auth.generate(provider, user_id).nodeify((err3, jwt) => {
+                horizon._auth.generate(provider, user_id, user_info).nodeify((err3, jwt) => {
                   // Clear the nonce just so we aren't polluting clients' cookies
                   clear_nonce(res, horizon._name);
                   do_redirect(res, err3 ?

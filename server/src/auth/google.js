@@ -26,7 +26,7 @@ function google(horizon, raw_options) {
     url.format({ protocol: 'https',
                  host: 'accounts.google.com',
                  pathname: '/o/oauth2/v2/auth',
-                 query: { client_id, redirect_uri, state, response_type: 'code', scope: 'profile' } });
+                 query: { client_id, redirect_uri, state, response_type: 'code', scope: 'email' } });
 
   oauth_options.make_token_request = (code, redirect_uri) => {
     const query_params = querystring.stringify({
