@@ -1,13 +1,11 @@
-client/dist/
-client/lib/
-rethinkdb_data_test
+cert.pem
+key.pem
+node_modules
+*.log
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# RethinkDB stuff
 rethinkdb_data/
-**/*.log
-.#*
-**/*-key.pem
-**/*-cert.pem
-node_modules/
-**/.DS_Store
-.hz/
-config.toml
-**/.vscode
+rethinkdb_data_test/
